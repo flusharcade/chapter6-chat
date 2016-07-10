@@ -1,12 +1,29 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------
+//  <copyright file="OAuthBearerTokenAuthenticationProvider" company="Flush Arcade Pty Ltd.">
+//    Copyright (c) 2016 Flush Arcade Pty Ltd. All rights reserved.
+//  </copyright>
+// --------------------------------------------------------------------------------------------------
 
 namespace Chat.Providers
 {
+    using System.Threading.Tasks;
+    using System;
+    using System.Linq;
+
+    using Microsoft.Owin.Security.OAuth;
+
+    /// <summary>
+    /// The OAuth bearer token authentication provider.
+    /// </summary>
     public class OAuthBearerTokenAuthenticationProvider : OAuthBearerAuthenticationProvider
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Requests the token.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override Task RequestToken(OAuthRequestTokenContext context)
         {
             string cookieToken = null;
@@ -51,5 +68,7 @@ namespace Chat.Providers
 
             return Task.FromResult<object>(null);
         }
+
+        #endregion
     }
 }

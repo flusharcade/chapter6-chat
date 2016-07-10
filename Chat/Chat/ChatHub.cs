@@ -1,4 +1,9 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------
+//  <copyright file="ChatHub" company="Flush Arcade Pty Ltd.">
+//    Copyright (c) 2016 Flush Arcade Pty Ltd. All rights reserved.
+//  </copyright>
+// --------------------------------------------------------------------------------------------------
+
 namespace Chat
 {
     using System;
@@ -15,19 +20,29 @@ namespace Chat
 
     using Chat.Models;
 
+    /// <summary>
+    /// The chat hub.
+    /// </summary>
     [Authorize]
     public class ChatHub : Hub
     {
+        #region Static Properties
+
+        /// <summary>
+        /// The list of connected users.
+        /// </summary>
         public static readonly ConcurrentDictionary<string, SigRUser> Users
             = new ConcurrentDictionary<string, SigRUser>(StringComparer.InvariantCultureIgnoreCase);
 
-        public void Send(string message)
-        {
-            string sender = Context.User.Identity.Name;
+        #endregion
 
-            Clients.All.received(new { sender = sender, message = message, isPrivate = false });
-        }
+        #region Public Methods
 
+        /// <summary>
+        /// Sends a message from client to another client.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="to"></param>
         public void Send(string message, string to)
         {
             SigRUser receiver;
@@ -48,6 +63,10 @@ namespace Chat
             }
         }
 
+        /// <summary>
+        /// Sends all other connected users the list of current clients connected.
+        /// </summary>
+        /// <param name="userName"></param>
         public void NotifyOtherConnectedUsers(string userName)
         {
             var connectionIds = Users.Where(x => !x.Key.Contains(userName))
@@ -60,6 +79,10 @@ namespace Chat
             }
         }
 
+        /// <summary>
+        /// Notified when a user connects
+        /// </summary>
+        /// <returns></returns>
         public override Task OnConnected()
         {
             var userName = (Context.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(claim => claim.Type == "UserName").Value;
@@ -81,6 +104,11 @@ namespace Chat
             return base.OnConnected();
         }
 
+        /// <summary>
+        /// Notified when a user disconnects
+        /// </summary>
+        /// <param name="stopCalled"></param>
+        /// <returns></returns>
         public override Task OnDisconnected(bool stopCalled)
         {
             var userName = (Context.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(claim => claim.Type == "UserName").Value;
@@ -103,12 +131,6 @@ namespace Chat
             return base.OnDisconnected(stopCalled);
         }
 
-        private SigRUser GetUser(string username)
-        {
-            SigRUser user;
-            Users.TryGetValue(username, out user);
-
-            return user;
-        }
+        #endregion
     }
 }

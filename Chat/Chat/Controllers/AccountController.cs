@@ -1,5 +1,10 @@
-﻿
-namespace ConnectionMappingSample.Controllers
+﻿// --------------------------------------------------------------------------------------------------
+//  <copyright file="AccountController" company="Flush Arcade Pty Ltd.">
+//    Copyright (c) 2016 Flush Arcade Pty Ltd. All rights reserved.
+//  </copyright>
+// --------------------------------------------------------------------------------------------------
+
+namespace Chat.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -15,15 +20,39 @@ namespace ConnectionMappingSample.Controllers
     using Chat;
     using Chat.Repositories;
 
+    /// <summary>
+    /// The account controller.
+    /// </summary>
     public class AccountController : ApiController
     {
+        #region Private Properties
+
+        /// <summary>
+        /// The account respository.
+        /// </summary>
         private AuthenticationRepository authenticationRepository;
 
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new account controller
+        /// </summary>
         public AccountController()
         {
             authenticationRepository = new AuthenticationRepository();
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Handles user registeration.
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ActionName("Register")]
@@ -38,6 +67,11 @@ namespace ConnectionMappingSample.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Handles user login.
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ActionName("Login")]
@@ -52,6 +86,10 @@ namespace ConnectionMappingSample.Controllers
             return (result != null);
         }
 
+        /// <summary>
+        /// Retrieves the latest client list.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         [ActionName("GetAllConnectedUsers")]
@@ -60,6 +98,14 @@ namespace ConnectionMappingSample.Controllers
             return ChatHub.Users.Select(x => x.Key);
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Handles disposing of controller.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -67,5 +113,7 @@ namespace ConnectionMappingSample.Controllers
 
             base.Dispose(disposing);
         }
+
+        #endregion
     }
 }

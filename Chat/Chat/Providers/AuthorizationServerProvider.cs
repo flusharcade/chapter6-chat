@@ -1,4 +1,9 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------
+//  <copyright file="AuthorizationServerProvider" company="Flush Arcade Pty Ltd.">
+//    Copyright (c) 2016 Flush Arcade Pty Ltd. All rights reserved.
+//  </copyright>
+// --------------------------------------------------------------------------------------------------
+
 namespace Chat.Providers
 {
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -9,13 +14,28 @@ namespace Chat.Providers
 
     using Chat.Repositories;
 
+    /// <summary>
+    /// The authorization server provider.
+    /// </summary>
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Validates the client's authentication
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
         }
 
+        /// <summary>
+        /// Grants the resource owner's credentials by checking in the UserManager
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
@@ -40,5 +60,7 @@ namespace Chat.Providers
 
             context.Validated(identity);
         }
+
+        #endregion
     }
 }

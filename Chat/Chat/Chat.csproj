@@ -136,9 +136,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="ChatHub.cs" />
-    <Compile Include="Client.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\SigRUser.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
