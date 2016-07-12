@@ -51,7 +51,8 @@ namespace Chat
             {
                 var userName = (Context.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(claim => claim.Type == "UserName").Value;
 
-                SigRUser sender = GetUser(userName);
+                SigRUser sender;
+                Users.TryRemove(userName, out sender);
 
                 lock (receiver.ConnectionIds)
                 {
